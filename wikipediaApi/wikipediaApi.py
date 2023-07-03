@@ -1,9 +1,14 @@
-from typing import Dict, List, Any
-from interfaceWikipediaApi import InterfaceWikipediaApi
-from fileManager import FileManager
+if __name__ != "__main__":
+    from wikipediaApi.interfaceWikipediaApi import InterfaceWikipediaApi
+    from wikipediaApi.fileManager import FileManager
+else:
+    from interfaceWikipediaApi import InterfaceWikipediaApi
+    from fileManager import FileManager
+
 import requests
 import logging
 import pprint
+from typing import Dict, List, Any
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

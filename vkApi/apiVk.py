@@ -1,6 +1,11 @@
+if __name__ != '__main__':
+    from vkApi.interfaceVkApi import InterfaceVkApi
+else:
+    from interfaceVkApi import InterfaceVkApi
+
 import requests
 import logging
-from interfaceVkApi import InterfaceVkApi
+
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
