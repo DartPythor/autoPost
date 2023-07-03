@@ -6,13 +6,15 @@ else:
     from fileManager import FileManager
 
 import requests
+import os
 import logging
 import pprint
 from typing import Dict, List, Any
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-handler = logging.FileHandler("WikipediApi.log", mode="w")
+
+handler = logging.FileHandler(os.path.join(os.getcwd(), "WikipediApi.log"), mode="w")
 format_handler = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(format_handler)
 logger.addHandler(handler)
@@ -67,6 +69,8 @@ class WikipediaApi(InterfaceWikipediaApi, FileManager):
 
         return "\n".join((data, "Источник: " + self.source_url + title))
 
+
+print(os.getcwd())
 
 if __name__ == '__main__':
     wiki = WikipediaApi()

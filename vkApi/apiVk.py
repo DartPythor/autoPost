@@ -5,11 +5,12 @@ else:
 
 import requests
 import logging
+import os
 
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
-handler = logging.FileHandler("VkApi.log", mode="w")
+handler = logging.FileHandler(os.path.join(os.getcwd(), "VkApi.log"), mode="w")
 format_handler = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(format_handler)
 logger.addHandler(handler)
