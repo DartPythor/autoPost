@@ -12,9 +12,9 @@ import pprint
 from typing import Dict, List, Any
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler(os.path.join(os.getcwd(), "WikipediApi.log"), mode="w")
+handler = logging.FileHandler(os.path.join(os.getcwd(), "logs", "WikipediApi.log"), mode="w")
 format_handler = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(format_handler)
 logger.addHandler(handler)
@@ -67,10 +67,8 @@ class WikipediaApi(InterfaceWikipediaApi, FileManager):
     def get_formate_page(self, title: str, data: str) -> str:
         """formatting datas for post"""
 
-        return "\n".join((data, "Источник: " + self.source_url + title))
+        return "\n".join((data, "Источник: " + self.source_url.format(title)))
 
-
-print(os.getcwd())
 
 if __name__ == '__main__':
     wiki = WikipediaApi()

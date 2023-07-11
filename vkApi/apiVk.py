@@ -9,8 +9,8 @@ import os
 
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING)
-handler = logging.FileHandler(os.path.join(os.getcwd(), "VkApi.log"), mode="w")
+logger.setLevel(logging.INFO)
+handler = logging.FileHandler(os.path.join(os.getcwd(), "logs", "VkApi.log"), mode="w")
 format_handler = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(format_handler)
 logger.addHandler(handler)
@@ -30,13 +30,13 @@ class VkApiUser(InterfaceVkApi):
     def _post(self, method: str, params: dict):
         headers = {"Authorization": f"Bearer {self.token}"}
         if "v" not in params: params["v"] = self.api_version
-        logger.debug(f"send post requests: {method}, params: {params}")
-        logger.info(f"send post requests: {method}, params: {params}")
+        logger.debug(f"send post requests: {method}, params: {str(params).encode('utf-8')}")
+        logger.info(f"send post requests: {method}, params: {str(params).encode('utf-8')}")
 
         result = requests.post(self.http + method, params=params, headers=headers).json()
 
-        logger.debug(f"result request: {result}")
-        logger.info(f"result request: {result}")
+        logger.debug(f"result request: {str(params).encode('utf-8')}")
+        logger.info(f"result request: {str(params).encode('utf-8')}")
         if "error" in result:
             if result["error"]["error_code"] == 5:
                 logger.critical(f"Access_token invalid: {result['error']}")

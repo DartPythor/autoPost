@@ -1,20 +1,19 @@
 import os
+import pickle
 
 
 class FileManager:
     def __init__(self, pathfile: str = os.getcwd()):
         self.pathfile = pathfile
 
-    def save(self, index_page: int, pages_list: list, plcontinue: str, filename: str) -> str:
-        data_save = "\n".join((str(index_page), plcontinue, "\n".join(pages_list)))
-        with open(os.path.join(self.pathfile, filename) + ".txt", mode="w", encoding="utf-8") as file:
-            file.write(data_save)
-        return os.path.join(self.pathfile, filename) + ".txt"
+    def save(self, data: any, filename: str) -> str:
+        with open(os.path.join(self.pathfile, filename) + ".pickle", mode="wb") as file:
+            pickle.dump(data, file)
+        return os.path.join(self.pathfile, filename)
 
-    def load(self, filename: str) -> dict:
-        with open(os.path.join(self.pathfile, filename) + ".txt", mode="r", encoding="utf-8") as file:
-            return {"index_page": int(file.readline()), "plcontinue": file.readline().strip(),
-                    "pages_list": [i.strip() for i in file.readlines()]}
+    def load(self, filename: str) -> any:
+        with open(os.path.join(self.pathfile, filename) + ".pickle", mode="rb") as file:
+            return pickle.load(file)
 
 
 if __name__ == '__main__':
