@@ -16,6 +16,6 @@ class FileManager:
             return pickle.load(file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     filemanager = FileManager()
     print(filemanager.load("testFile"))

@@ -53,13 +53,13 @@ def main(vk: VkApiUser, wiki: WikipediaApi, data: dict) -> None:
         data["index_page"] = 0
 
     schedule.every().day.at("09:00").do(wall_post, vk, wiki, -221307349, data)
-    schedule.every().day.at("21:00").do(wall_post, vk, wiki, -221307349, data)
+    schedule.every().day.at("23:01").do(wall_post, vk, wiki, -221307349, data)
     while True:
         schedule.run_pending()
         time.sleep(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     access_token = input()
     user_id = 456850585
     nickname = "mr.stark3"

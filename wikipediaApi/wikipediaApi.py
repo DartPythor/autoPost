@@ -14,7 +14,9 @@ from typing import Dict, List, Any
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-handler = logging.FileHandler(os.path.join(os.getcwd(), "logs", "WikipediApi.log"), mode="w")
+handler = logging.FileHandler(
+    os.path.join(os.getcwd(), "logs", "WikipediApi.log"), mode="w"
+)
 format_handler = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(format_handler)
 logger.addHandler(handler)
@@ -35,7 +37,9 @@ class WikipediaApi(InterfaceWikipediaApi, FileManager):
         params.update({"format": "json"})
         return requests.get(url=self.url.format(self.lang), params=params).json()
 
-    def get_pages_list(self, apcontinue: str = "", limit: int = 500) -> dict[str, str, list[Any] | Any]:
+    def get_pages_list(
+        self, apcontinue: str = "", limit: int = 500
+    ) -> dict[str, str, list[Any] | Any]:
         """возращает все русскоязычные страницы, limit - сколько придет в json ответе(макс. 500)"""
 
         params = {"action": "query", "list": "allpages", "aplimit": str(limit)}
@@ -45,32 +49,35 @@ class WikipediaApi(InterfaceWikipediaApi, FileManager):
         pages_list = self._get(params)
         result = {
             "pages": [i["title"] for i in pages_list["query"]["allpages"]],
-            "apcontinue": pages_list["continue"]["apcontinue"]
-                  }
+            "apcontinue": pages_list["continue"]["apcontinue"],
+        }
         return result
 
     def get_content_page(self, titles: str | List[str]) -> Dict[str, str]:
         """return content(small) page wikipedia with title"""
         params = {
-            "action": "query", "prop": "extracts",
-            "exlimit": "max", "explaintext": "",
-            "exintro": "", "redirects": "",
-            "exchars": str(1200)
-                  }
-        params.update({"titles": titles if isinstance(titles, str) else "|".join(titles)})
+            "action": "query",
+            "prop": "extracts",
+            "exlimit": "max",
+            "explaintext": "",
+            "exintro": "",
+            "redirects": "",
+            "exchars": str(1200),
+        }
+        params.update(
+            {"titles": titles if isinstance(titles, str) else "|".join(titles)}
+        )
         response = self._get(params)
         pages_id = tuple(response["query"]["pages"].keys())
         pages_title = [titles] if isinstance(titles, str) else titles
 
-        return {pages_title[i]: response["query"]["pages"][pages_id[i]]["extract"] for i in range(len(pages_id))}
-
-    def get_formate_page(self, title: str, data: str) -> str:
-        """formatting datas for post"""
-
-        return "\n".join((data, "Источник: " + self.source_url.format(title)))
+        return {
+            pages_title[i]: response["query"]["pages"][pages_id[i]]["extract"]
+            for i in range(len(pages_id))
+        }
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     wiki = WikipediaApi()
     pprint.pprint(wiki.get_content_page("(1367) Нонгома"))
     # print(wiki._get_lang_from_dict(wiki.get_lang("'eiki")))

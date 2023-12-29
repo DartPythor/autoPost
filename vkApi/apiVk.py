@@ -1,4 +1,4 @@
-if __name__ != '__main__':
+if __name__ != "__main__":
     from vkApi.interfaceVkApi import InterfaceVkApi
 else:
     from interfaceVkApi import InterfaceVkApi
@@ -29,11 +29,18 @@ class VkApiUser(InterfaceVkApi):
 
     def _post(self, method: str, params: dict):
         headers = {"Authorization": f"Bearer {self.token}"}
-        if "v" not in params: params["v"] = self.api_version
-        logger.debug(f"send post requests: {method}, params: {str(params).encode('utf-8')}")
-        logger.info(f"send post requests: {method}, params: {str(params).encode('utf-8')}")
+        if "v" not in params:
+            params["v"] = self.api_version
+        logger.debug(
+            f"send post requests: {method}, params: {str(params).encode('utf-8')}"
+        )
+        logger.info(
+            f"send post requests: {method}, params: {str(params).encode('utf-8')}"
+        )
 
-        result = requests.post(self.http + method, params=params, headers=headers).json()
+        result = requests.post(
+            self.http + method, params=params, headers=headers
+        ).json()
 
         logger.debug(f"result request: {str(params).encode('utf-8')}")
         logger.info(f"result request: {str(params).encode('utf-8')}")
@@ -56,7 +63,7 @@ class VkApiUser(InterfaceVkApi):
         return self._post("wall.post", kwargs)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     access_token = ""
     user_id = 456850585
     nickname = "mr.stark3"

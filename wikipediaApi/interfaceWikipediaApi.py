@@ -8,9 +8,5 @@ class InterfaceWikipediaApi(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_content_page(self, *args, **kwargs):
-        pass
-
-    @abstractmethod
-    def get_formate_page(self, *args, **kwargs):
+    def get_image_title(self, *args, **kwargs):
         pass
