@@ -1,48 +1,31 @@
-if __name__ != "__main__":
-    from wikipediaApi.interfaceWikipediaApi import InterfaceWikipediaApi
-    from wikipediaApi.fileManager import FileManager
-else:
-    from interfaceWikipediaApi import InterfaceWikipediaApi
-    from fileManager import FileManager
+import interfaceWikipediaApi
+import fileManager
 
 import requests
-import os
-import logging
-import pprint
-from typing import Dict, List, Any
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-handler = logging.FileHandler(
-    os.path.join(os.getcwd(), "logs", "WikipediApi.log"), mode="w"
-)
-format_handler = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
-handler.setFormatter(format_handler)
-logger.addHandler(handler)
 
 
-class WikipediaApi(InterfaceWikipediaApi, FileManager):
+class WikipediaApi(
+    interfaceWikipediaApi.InterfaceWikipediaApi,
+    fileManager.FileManager,
+):
     url = "https://{0}.wikipedia.org/w/api.php"
     source_url = "https://ru.wikipedia.org/wiki/{0}"
 
-    def __init__(self, lang: str = "ru"):
+    def __init__(self, lang: str = "en"):
         super().__init__()
-        self.path_file = ""
         self.lang = lang
+        self.backup = None
 
-    def _get(self, params: dict) -> dict:
-        """Getting get requests on wiki"""
-
+    def _get(self, params):
         params.update({"format": "json"})
         return requests.get(url=self.url.format(self.lang), params=params).json()
 
-    def get_pages_list(
-        self, apcontinue: str = "", limit: int = 500
-    ) -> dict[str, str, list[Any] | Any]:
-        """возращает все русскоязычные страницы, limit - сколько придет в json ответе(макс. 500)"""
-
-        params = {"action": "query", "list": "allpages", "aplimit": str(limit)}
+    def get_pages_list(self, apcontinue="", limit=500):
+        params = {
+            "action": "query",
+            "list": "allpages",
+            "aplimit": str(limit),
+        }
         if apcontinue:
             params.update({"apcontinue": apcontinue})
 
@@ -53,31 +36,26 @@ class WikipediaApi(InterfaceWikipediaApi, FileManager):
         }
         return result
 
-    def get_content_page(self, titles: str | List[str]) -> Dict[str, str]:
-        """return content(small) page wikipedia with title"""
-        params = {
-            "action": "query",
-            "prop": "extracts",
-            "exlimit": "max",
-            "explaintext": "",
-            "exintro": "",
-            "redirects": "",
-            "exchars": str(1200),
-        }
-        params.update(
-            {"titles": titles if isinstance(titles, str) else "|".join(titles)}
-        )
-        response = self._get(params)
-        pages_id = tuple(response["query"]["pages"].keys())
-        pages_title = [titles] if isinstance(titles, str) else titles
+    def get_title(self):
+        data = self.load()
+        if not data["pages"]:
+            data = self.get_pages_list(data["apcontinue"])
+        title = data["pages"].pop(0)
+        self.backup = title
+        self.save(data)
+        return title
 
-        return {
-            pages_title[i]: response["query"]["pages"][pages_id[i]]["extract"]
-            for i in range(len(pages_id))
-        }
+    def set_backup(self):
+        if self.backup is None:
+            ...
+        data = self.load()
+        data["pages"].append(self.backup)
+        self.save(data)
 
 
 if __name__ == "__main__":
     wiki = WikipediaApi()
-    pprint.pprint(wiki.get_content_page("(1367) Нонгома"))
+    for i in range(1500):
+        print(wiki.get_title())
+    # pprint.pprint(wiki.get_content_page("(1367) Нонгома"))
     # print(wiki._get_lang_from_dict(wiki.get_lang("'eiki")))

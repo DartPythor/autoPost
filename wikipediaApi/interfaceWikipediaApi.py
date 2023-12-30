@@ -7,6 +7,6 @@ class InterfaceWikipediaApi(metaclass=ABCMeta):
     def get_pages_list(self, *args, **kwargs):
         pass
 
-    @abstractmethod
-    def get_image_title(self, *args, **kwargs):
-        pass
+    # @abstractmethod
+    # def get_image_title(self, *args, **kwargs):
+    #     pass
