@@ -1,4 +1,5 @@
 requests==2.27.1
-schedule==1.1.0
+schedule==1.2.1
+python-decouple==3.8
 g4f==0.1.9.6
 vkbottle==4.3.12
