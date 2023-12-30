@@ -1,11 +1,21 @@
-import fileManager
-import interfaceWikipediaApi
+import wikipedia.fileManager
+import wikipedia.interfaceWikipediaApi
 import requests
 
 
+class WikipediaException(Exception):
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+
+
+class BackupError(WikipediaException):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 class WikipediaApi(
-    interfaceWikipediaApi.InterfaceWikipediaApi,
-    fileManager.FileManager,
+    wikipedia.interfaceWikipediaApi.InterfaceWikipediaApi,
+    wikipedia.fileManager.FileManager,
 ):
     url = "https://{0}.wikipedia.org/w/api.php"
     source_url = "https://ru.wikipedia.org/wiki/{0}"
@@ -46,7 +56,7 @@ class WikipediaApi(
 
     def set_backup(self):
         if self.backup is None:
-            ...
+            raise BackupError("Error backup return")
         data = self.load()
         data["pages"].append(self.backup)
         self.save(data)
