@@ -1,6 +1,7 @@
+import requests
+
 import wikipedia.fileManager
 import wikipedia.interfaceWikipediaApi
-import requests
 
 
 class WikipediaException(Exception):

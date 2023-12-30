@@ -39,3 +39,6 @@ class TestFileSave:
         manager.save(data)
         data = manager.load()
         assert data["pages"] == ["Test page"]
+
+
+__all__ = ()
