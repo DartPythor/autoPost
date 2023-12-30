@@ -44,3 +44,6 @@ class FileManager:
 
     def save(self, data):
         self._save(data)
+
+
+__all__ = ()

@@ -1,6 +1,6 @@
 [flake8]
-exclude = ./venv/
-application-import-names = vkApi, wikipediaApi,
+exclude = ./venv/, ./test_my.py
+application-import-names = wikipediaApi
 import-order-style = google
 inline-quotes = "
 max-line-length = 88

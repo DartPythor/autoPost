@@ -1,5 +1,7 @@
-import decouple
 import os
+
+import decouple
+
 
 FILE_STORAGE_DATA = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),

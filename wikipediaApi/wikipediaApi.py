@@ -1,6 +1,5 @@
-import interfaceWikipediaApi
 import fileManager
-
+import interfaceWikipediaApi
 import requests
 
 
@@ -53,9 +52,4 @@ class WikipediaApi(
         self.save(data)
 
 
-if __name__ == "__main__":
-    wiki = WikipediaApi()
-    for i in range(1500):
-        print(wiki.get_title())
-    # pprint.pprint(wiki.get_content_page("(1367) Нонгома"))
-    # print(wiki._get_lang_from_dict(wiki.get_lang("'eiki")))
+__all__ = ()
