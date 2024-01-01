@@ -1,6 +1,6 @@
 [flake8]
 exclude = ./venv/, ./test_my.py
-application-import-names = wikipedia
+application-import-names = wikipedia, vkontakte, poster, config
 import-order-style = google
 inline-quotes = "
 max-line-length = 88
