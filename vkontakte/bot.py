@@ -1,12 +1,12 @@
 import random
-import requests
 
-import vkontakte.vk_config
+import requests
 import vkbottle.bot
 
 import config
 import vkontakte.bot_handlers.admin
 import vkontakte.bot_handlers.middleware
+import vkontakte.vk_config
 
 
 class Bot(vkbottle.bot.Bot):
@@ -83,3 +83,5 @@ bot = Bot(
     token=config.ACCESS_TOKEN_BOT,
     labeler=vkontakte.vk_config.labeler,
 )
+
+__all__ = ()

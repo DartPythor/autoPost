@@ -6,7 +6,12 @@ import config
 
 
 class ChatGPT(g4f.ChatCompletion):
-    def __init__(self, model=g4f.models.gpt_4, role="user", filename="chatGPT_message.txt"):
+    def __init__(
+        self,
+        model=g4f.models.gpt_4,
+        role="user",
+        filename="chatGPT_message.txt",
+    ):
         self.model = model
         self.role = role
         self.filename = filename
@@ -28,3 +33,6 @@ class ChatGPT(g4f.ChatCompletion):
             model=self.model,
             messages=[{"role": self.role, "content": self.get_template(theme)}],
         )
+
+
+__all__ = ()
