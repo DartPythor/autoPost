@@ -15,7 +15,7 @@ class BackupError(WikipediaException):
 
 
 class WikipediaApi(
-    wikipedia.interfaceWikipediaApi.InterfaceWikipediaApi,
+    wikipedia.interface_wikipedia_api.InterfaceWikipediaApi,
     wikipedia.fileManager.FileManager,
 ):
     url = "https://{0}.wikipedia.org/w/api.php"
