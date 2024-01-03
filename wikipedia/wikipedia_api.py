@@ -59,7 +59,7 @@ class WikipediaApi(
         if self.backup is None:
             raise BackupError("Error backup return")
         data = self.load()
-        data["pages"].append(self.backup)
+        data["pages"].insert(0, self.backup)
         self.save(data)
 
 
