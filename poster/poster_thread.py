@@ -43,7 +43,7 @@ class PosterThread(threading.Thread):
 
     def set_schedule(self, func):
         for t in self.day_post, self.night_post:
-            schedule.every().day.at(t).do(func)
+            schedule.every().day.at(t, self.timezone).do(func)
 
     def get_title(self):
         return self.wikipedia.get_title()
