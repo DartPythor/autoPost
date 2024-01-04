@@ -1,9 +1,10 @@
 import threading
 import time
+
 import schedule
 
-import config
 import chatGPT.chat_gpt
+import config
 import vkontakte.bot
 import vkontakte.user
 import wikipedia.wikipedia_api
@@ -29,12 +30,14 @@ class PosterThread(threading.Thread):
         self.chat_gpt = chatGPT.chat_gpt.ChatGPT()
 
         self._stop_event = threading.Event()
+        self._stop_event.set()
+        self._pause_event = threading.Event()
 
     def run(self):
         self.set_schedule(self.send_post)
-        self.bot.send_notification("Thread poster run!")
-        while True:
-            self._stop_event.wait()
+        self.bot.send_notification("Сервер запущен ✅")
+        while self._stop_event.is_set():
+            self._pause_event.wait()
             time.sleep(10)
             schedule.run_pending()
 
@@ -57,16 +60,26 @@ class PosterThread(threading.Thread):
             self.send_notification(theme)
 
     def send_notification(self, theme):
-        return self.bot.send_notification(f"Пост выложен на тему: {theme}")
+        try:
+            return self.bot.send_notification(f"Пост выложен на тему: {theme}")
+        except Exception as error:
+            return error
 
     def get_post_content(self, theme):
         return self.chat_gpt.make_post_content(theme)
 
     def stop(self):
-        self._stop_event.set()
-
-    def start_post(self):
+        self._pause_event.set()
         self._stop_event.clear()
 
+    def start_post(self):
+        self._pause_event.set()
+
+    def stop_post(self):
+        self._pause_event.clear()
+
     def is_stop(self):
-        self._stop_event.is_set()
+        return self._pause_event.is_set()
+
+
+__all__ = ()
