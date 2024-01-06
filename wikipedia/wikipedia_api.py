@@ -21,7 +21,7 @@ class WikipediaApi(
     url = "https://{0}.wikipedia.org/w/api.php"
     source_url = "https://ru.wikipedia.org/wiki/{0}"
 
-    def __init__(self, lang: str = "en"):
+    def __init__(self, lang: str = "ru"):
         super().__init__()
         self.lang = lang
         self.backup = None
@@ -46,6 +46,29 @@ class WikipediaApi(
         }
         return result
 
+    def get_content_page(self, titles):
+        """return content(small) page wikipedia with title"""
+        params = {
+            "action": "query",
+            "prop": "extracts",
+            "exlimit": "max",
+            "explaintext": "",
+            "exintro": "",
+            "redirects": "",
+            "exchars": str(150),
+        }
+        params.update(
+            {"titles": titles if isinstance(titles, str) else "|".join(titles)}
+        )
+        response = self._get(params)
+        pages_id = tuple(response["query"]["pages"].keys())
+        pages_title = [titles] if isinstance(titles, str) else titles
+
+        return {
+            pages_title[i]: response["query"]["pages"][pages_id[i]]["extract"]
+            for i in range(len(pages_id))
+        }
+
     def get_title(self):
         data = self.load()
         if not data["pages"]:
@@ -64,3 +87,8 @@ class WikipediaApi(
 
 
 __all__ = ()
+
+
+if __name__ == '__main__':
+    wiki = WikipediaApi()
+    print(wiki.get_content_page("!!!"))
