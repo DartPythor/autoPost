@@ -66,7 +66,8 @@ class PosterThread(threading.Thread):
             return error
 
     def get_post_content(self, theme):
-        return self.chat_gpt.make_post_content(theme)
+        content = self.wikipedia.get_content_page(theme)[theme]
+        return self.chat_gpt.make_post_content(theme, content)
 
     def stop(self):
         self._pause_event.set()
