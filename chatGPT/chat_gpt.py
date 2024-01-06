@@ -16,7 +16,7 @@ class ChatGPT(g4f.ChatCompletion):
         self.role = role
         self.filename = filename
 
-    def get_template(self, theme):
+    def get_template(self, theme, content):
         with open(
             os.path.join(
                 config.FILE_STORAGE_TEMPLATES,
@@ -26,12 +26,14 @@ class ChatGPT(g4f.ChatCompletion):
             encoding="utf-8",
         ) as file:
             template = file.readline()
-        return template.format(theme=theme)
+        return template.format(theme=theme, content=content)
 
-    def make_post_content(self, theme):
+    def make_post_content(self, theme, content):
         return self.create(
             model=self.model,
-            messages=[{"role": self.role, "content": self.get_template(theme)}],
+            messages=[
+                {"role": self.role, "content": self.get_template(theme, content)},
+            ],
         )
 
 
