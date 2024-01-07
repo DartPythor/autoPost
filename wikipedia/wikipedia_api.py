@@ -58,7 +58,7 @@ class WikipediaApi(
             "exchars": str(150),
         }
         params.update(
-            {"titles": titles if isinstance(titles, str) else "|".join(titles)}
+            {"titles": titles if isinstance(titles, str) else "|".join(titles)},
         )
         response = self._get(params)
         pages_id = tuple(response["query"]["pages"].keys())
@@ -87,8 +87,3 @@ class WikipediaApi(
 
 
 __all__ = ()
-
-
-if __name__ == '__main__':
-    wiki = WikipediaApi()
-    print(wiki.get_content_page("!!!"))
